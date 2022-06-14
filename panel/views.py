@@ -1,10 +1,14 @@
+from gettext import install
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from authlib.integrations.django_client import OAuth
 from django.conf import settings
+from urllib.parse import quote_plus, urlencode
 from django.db import models
-from gettext import install
 from panel.model_creator import create_model
+from django.apps import apps
+from django.contrib import admin
+from django.contrib.admin.sites import AlreadyRegistered
 
 
 oauth = OAuth()
@@ -18,6 +22,11 @@ oauth.register(
     },
     server_metadata_url=f"https://{settings.AUTH0_DOMAIN}/.well-known/openid-configuration",
 )
+
+def callback(request):
+    token = oauth.auth0.authorize_access_token(request)
+    request.session["user"] = token
+    return redirect(request.build_absolute_uri(reverse("dashboard")))
 
 def dashboard(request):
     if request.session.get('user') == None:
@@ -34,7 +43,7 @@ def login(request):
     return oauth.auth0.authorize_redirect(
         request, request.build_absolute_uri(reverse("callback"))
     )
-    
+
 def create_table(request):
     if request.method == 'POST':
         table_name = request.POST.get('table_name')
