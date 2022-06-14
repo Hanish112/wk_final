@@ -40,4 +40,4 @@ Django (Python), HTML, CSS, JavaScript, Bootstrap.
 --
 ### Contributors
 * [Hanish](https://github.com/Hanish112)
-* [Pavithra](https://github.com/PaviG02)
+* [Pavithra](https://github.com/PaviG26)
