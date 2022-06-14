@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY',default='INSECURE_KEY')
 
-AUTH0_CLIENT_ID = env('AUTH0_CLIENT_ID')
-AUTH0_CLIENT_SECRET = env('AUTH0_CLIENT_SECRET')
-AUTH0_DOMAIN = env('AUTH0_DOMAIN')
+AUTH0_CLIENT_ID = env('AUTH0_CLIENT_ID',default='INSECURE_KEY')
+AUTH0_CLIENT_SECRET = env('AUTH0_CLIENT_SECRET',default='INSECURE_KEY')
+AUTH0_DOMAIN = env('AUTH0_DOMAIN',default='INSECURE_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
