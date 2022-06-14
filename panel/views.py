@@ -3,6 +3,7 @@ from authlib.integrations.django_client import OAuth
 from django.conf import settings
 from django.db import models
 from gettext import install
+from panel.model_creator import create_model
 oauth = OAuth()
 
 oauth.register(
@@ -54,3 +55,26 @@ def create_table(request):
             field_types.append(type)
         print(field_names)
         print(field_types)
+        fields = {}
+        for i in range(field_cnt):
+            pr = (primary_key == (i+1))
+            if field_types[i] == 'String':
+                model = models.CharField(max_length=200, null=True, primary_key=pr)
+            if field_types[i] == 'Number':
+                model = models.IntegerField(null=True, primary_key=pr)
+            if field_types[i] == 'Boolean':
+                model = models.BooleanField(null=True, primary_key=pr)
+            if field_types[i] == 'Email':
+                model = models.EmailField(null=True, primary_key=pr)
+            if field_types[i] == 'Datetime':
+                model = models.DateTimeField(null=True, primary_key=pr)
+            fields[field_names[i].replace(' ', '_')] = model
+
+        table_name = table_name.strip().replace(' ', '_')
+        mdl = create_model(
+            name=table_name,
+            fields=fields,
+            app_label='panel'
+        )
+        return redirect('dashboard')
+    return render(request, 'panel/create_table.html')
