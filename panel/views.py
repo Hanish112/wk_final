@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from authlib.integrations.django_client import OAuth
 from django.conf import settings
 from django.db import models
 from gettext import install
 from panel.model_creator import create_model
+
+
 oauth = OAuth()
 
 oauth.register(
@@ -78,3 +81,17 @@ def create_table(request):
         )
         return redirect('dashboard')
     return render(request, 'panel/create_table.html')
+
+def logout(request):
+    request.session.clear()
+
+    return redirect(
+        f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+        + urlencode(
+            {
+                "returnTo": request.build_absolute_uri(reverse("login")),
+                "client_id": settings.AUTH0_CLIENT_ID,
+            },
+            quote_via=quote_plus,
+        ),
+    )
