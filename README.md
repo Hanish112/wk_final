@@ -35,3 +35,5 @@ From now when you start your work, run ``source bin/activate`` inside the projec
 *Make sure you pull new changes from remote regularly.*
 
 --
+## Tech Stack
+Django (Python), HTML, CSS, JavaScript, Bootstrap.
