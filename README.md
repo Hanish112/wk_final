@@ -37,3 +37,7 @@ From now when you start your work, run ``source bin/activate`` inside the projec
 --
 ## Tech Stack
 Django (Python), HTML, CSS, JavaScript, Bootstrap.
+--
+### Contributors
+* [Hanish](https://github.com/Hanish112)
+* [Pavithra](https://github.com/PaviG02)
