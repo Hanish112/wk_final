@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        .errorbox{
+            background: red;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <script>
+        $(document).ready(function() {
+            var max_fields = 10;
+            var wrapper = $("#form_cont");
+            var add_button = $("#add_field_btn");
+            var sub_btn = $("#add_field_btn");
+            var x = 1;
+            $(add_button).click(function(e) {
+                e.preventDefault();
+                if (x < max_fields) {
+                    x++;
+                    $(wrapper).append('<div class="row mb-3" style="padding: 5px; border-width: 1px; border-style:solid; margin:10px; border-radius: 10px;"><strong><h6 style="font-weight:bold; padding: 5px;">Field Details</h6></strong><div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="tableName" placeholder="Field Name" name="field_name' + (x-1) + '">&nbsp;<h6>Field Type: </h6><select name="field_type' + (x-1) + '"><option value="String">String</option><option value="Number">Number</option><option value="Boolean">Boolean</option><option value="Email">Email</option><option value="Datetime">Datetime</option></select><br>&nbsp;<h6>Primary Key: </h6><select name="primary_key' + (x-1) + '"><option value="Yes">Yes</option><option value="No">No</option></select></div></div>');
+                } else {
+                    alert('You Reached the limits')
+                }
+            });
+            $(sub_btn).click(function(e){
+                $("#field_cnt").setattr("value", x-1);
+            });
+        
+            $(wrapper).on("click", ".delete", function(e) {
+                e.preventDefault();
+                $(this).parent('div').remove();
+                x--;
+            })
+        });
+    </script>
+    <div id="wrapper">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="me-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{name}}</span><img class="border rounded-circle img-profile" src="{% static 'img/avatars/avatar3.jpeg' %}"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                {% if error %}
+                <p class="errorbox">{{error}}</p>
+                {% endif %}
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Create New Table</h3>
+                    <div class="card shadow">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div id="form_cont">
+                                <input style="display:none;" id="field_cnt" name="field_cnt">
+                                <br>
+                                <div class="row mb-3" style="padding: 10px;">
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="tableName" placeholder="Table Name" name="table_name"></div>
+                                </div>
+                            </div>
+                            &nbsp;<button class="btn btn-primary d-block btn-user" type="submit" id="create_table_btn" style="margin:20px;">Create Table</button>
+                        </form>
+                        <button class="btn btn-primary d-block btn-user w-100" type="submit" id="add_field_btn">Add Field</button>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Walkover 2022</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="{% static 'js/script.min.js' %}"></script>
+
+</body>
+
+</html>
