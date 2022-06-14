@@ -30,7 +30,11 @@ def dashboard(request):
     session = request.session.get("user")
     return render(request, 'panel/index.html', {'name': session['userinfo']['name']})
 
-
+def login(request):
+    return oauth.auth0.authorize_redirect(
+        request, request.build_absolute_uri(reverse("callback"))
+    )
+    
 def create_table(request):
     if request.method == 'POST':
         table_name = request.POST.get('table_name')
