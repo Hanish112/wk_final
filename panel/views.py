@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from authlib.integrations.django_client import OAuth
 from django.conf import settings
 from django.db import models
+from gettext import install
 oauth = OAuth()
 
 oauth.register(
@@ -35,3 +36,21 @@ def create_table(request):
         field_cnt = (len(request.POST.keys()) - 3) // 3
         if field_cnt == 0:
             return render(request, 'panel/create_table.html', {'error': 'No fields added !'})
+        field_names = []
+        field_types = []
+        primary_key = -1
+        for i in range(1, field_cnt+1):
+            name = request.POST.get('field_name' + str(i))
+            if name.strip() == '':
+                return render(request, 'panel/create_table.html', {'error': 'One or more field names are empty !'})
+            type = request.POST.get('field_type' + str(i))
+            pr_key = request.POST.get('primary_key' + str(i))
+            if pr_key == 'Yes':
+                if primary_key != -1:
+                    return render(request, 'panel/create_table.html', {'error': 'Only one primary key is allowed!'})
+                else:
+                    primary_key = i
+            field_names.append(name)
+            field_types.append(type)
+        print(field_names)
+        print(field_types)
