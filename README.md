@@ -1,4 +1,5 @@
-# wk_final
+# WALKOVER FINAL PROJECT  
+[![Django CI](https://github.com/Hanish112/wk_final/actions/workflows/django.yml/badge.svg?branch=master)](https://github.com/Hanish112/wk_final/actions/workflows/django.yml)
 ## Installation Instructions
 The portal is primarily a django based application, and to set it up we require to have 
 python environment with django and other project dependencies installed. Though one can
